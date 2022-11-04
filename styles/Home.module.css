@@ -108,6 +108,23 @@
   margin-left: 0.5rem;
 }
 
+.flag {
+  margin: 0 0.25em;
+}
+
+.map {
+  margin: 4em 0;
+}
+
+.marker {
+  height: 50px;
+}
+
+.leaflet-container {
+  width: 100wh; 
+  height: 100vh;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
@@ -115,7 +132,7 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   .card,
   .footer {
     border-color: #222;
@@ -126,4 +143,4 @@
   .logo img {
     filter: invert(1);
   }
-}
+} */
