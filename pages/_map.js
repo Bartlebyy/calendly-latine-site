@@ -16,6 +16,7 @@ export default function Map() {
   const [markers, setMarkers] = useState([])
 
   useEffect(() => {
+    console.log('i fire once')
     async function getData(doc) {
       await doc.useServiceAccountAuth({
         client_email: process.env.NEXT_PUBLIC_GOOGLE_SHEET_CLIENT_EMAIL,
@@ -43,35 +44,36 @@ export default function Map() {
   }, [])
 
   useEffect(()=> {
+    console.log('row was updated')
+    if (markers.length !== 0) return
+
     rows.filter((row)=> {
       const name = row['Full name']
       const zipcode = row['Zipcode']
       const country = row['Country']
 
-      if(country && zipcode && name) {
-        return true
-      } else {
-        return false
-      }
+      return !!(country && zipcode && name)
     }).map((row)=> {
       const name = row['Full name']
       const zipcode = row['Zipcode']
       const country = row['Country']
+
       let flagURL = ''
       const str = country.replace(/\s+/g, '-').toLowerCase()
       flagURL = `/flags/${str}.png`
   
       const marker = {
-        message: `This is where ${name} lives. <br /> Their family is from ${country}.`,
+        message: `This is where ${name} lives. Their family is from ${country}.`,
         position: [Math.random()/5*100+30, -Math.random()/2*100-70],
-        icon: L.icon({ iconUrl: flagURL, className: styles.marker })
+        icon: L.icon({ iconUrl: flagURL, className: styles.marker }),
+        key: name + zipcode + country
       }
       setMarkers(markers => [...markers, marker]);
     })
   }, [rows])
 
   const markerComponent = ((markerObj) => (
-    <Marker position={markerObj.position} icon={markerObj.icon}>
+    <Marker position={markerObj.position} icon={markerObj.icon} key={markerObj.key}>
       <Popup>
         {markerObj.message}
       </Popup>
@@ -80,7 +82,7 @@ export default function Map() {
 
   return (
     <div>
-      <MapContainer center={position} zoom={4} scrollWheelZoom={false} style={{height: '600px',width: '90vw'}}>
+      <MapContainer center={position} zoom={3} scrollWheelZoom={false} style={{height: '600px',width: '90vw'}}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -90,6 +92,5 @@ export default function Map() {
         ))}
       </MapContainer>
     </div>
-    
   )
 }
