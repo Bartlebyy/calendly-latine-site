@@ -7,13 +7,20 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet/dist/leaflet.js'
 import styles from '../styles/Home.module.css'
 
-const position = [39.8283, -98.5795]
-const icon = L.icon({ iconUrl: "/flags/nicaragua.png", className: styles.marker });
 const doc = new GoogleSpreadsheet(process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID)
 
 export default function Map() {
   const [rows, setRows] = useState([])
   const [markers, setMarkers] = useState([])
+  const centerPosition= [39.8283, -98.5795]
+
+  const markerComponent = ((markerObj) => (
+    <Marker position={markerObj.position} icon={markerObj.icon} key={markerObj.key}>
+      <Popup>
+        {markerObj.message}
+      </Popup>
+    </Marker>
+  ))
 
   useEffect(() => {
     console.log('i fire once')
@@ -26,7 +33,7 @@ export default function Map() {
           doc.getRow(1,function(error,row){
               if(!error && row){
                 console.log(row);
-              }else{
+              } else {
                  console.log('ERROR IN getRow :'+error);
               }
            });
@@ -72,17 +79,9 @@ export default function Map() {
     })
   }, [rows])
 
-  const markerComponent = ((markerObj) => (
-    <Marker position={markerObj.position} icon={markerObj.icon} key={markerObj.key}>
-      <Popup>
-        {markerObj.message}
-      </Popup>
-    </Marker>
-  ))
-
   return (
     <div>
-      <MapContainer center={position} zoom={3} scrollWheelZoom={false} style={{height: '600px',width: '90vw'}}>
+      <MapContainer center={centerPosition} zoom={4} scrollWheelZoom={false} style={{height: '600px',width: '90vw'}}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
