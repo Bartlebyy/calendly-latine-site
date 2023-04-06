@@ -2,21 +2,6 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 const doc = new GoogleSpreadsheet(process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID);
 
-// function to cache data in localStorage
-function cacheData(key, data) {
-  const cachedDataObj = { data };
-  localStorage.setItem(key, JSON.stringify(cachedDataObj));
-}
-
-// function to get cached data from localStorage
-function getCachedData(key) {
-  const cachedData = localStorage.getItem(key);
-  if (cachedData) {
-    return JSON.parse(cachedData);
-  }
-  return null;
-}
-
 async function fetchSheetRow() {
   console.log('Fetching data...');
   try {
@@ -73,12 +58,6 @@ async function savePositionInSheet(sheet, rowNumber, lat, lon) {
 
 async function getLatLongFromZipcode(zipcode) {
   try {
-    const cachedData = getCachedData(zipcode);
-    if (cachedData) {
-      const { lat, lon } = cachedData;
-      return [parseFloat(lat), parseFloat(lon)];
-    }
-
     const baseUrl = 'https://nominatim.openstreetmap.org/search';
     const url = `${baseUrl}?format=json&postalcode=${zipcode}`;
     const response = await fetch(url);
@@ -86,7 +65,6 @@ async function getLatLongFromZipcode(zipcode) {
 
     if (data.length > 0) {
       const { lat, lon } = data[0];
-      cacheData(zipcode, { lat, lon });
       return [parseFloat(lat), parseFloat(lon)];
     }
 
