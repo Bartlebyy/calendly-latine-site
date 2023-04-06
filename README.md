@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Calendly Latine Site
+#### A website for the latine members of Calendly to find one another
+<img width="1437" alt="image" src="https://user-images.githubusercontent.com/6975256/230500243-9fb3d812-600e-4742-af81-04b3e4309bdb.png">
 
 ## Getting Started
 
