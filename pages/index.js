@@ -67,7 +67,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <a href="https://www.flaticon.com/packs/international-flags-2a" title="Flag icons">Flag icons created by Freepik - Flaticon</a>
+        <a href="https://www.flaticon.com/packs/international-flags-3" title="Flag icons">Flag icons created by Freepik - Flaticon</a>
       </footer>
     </div>
   )

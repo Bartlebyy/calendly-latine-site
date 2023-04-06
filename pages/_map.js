@@ -6,9 +6,17 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js';
 import styles from '../styles/Home.module.css';
-import { fetchData, getLatLongFromZipcode } from './_data'
+import { fetchSheetRow, getPosition } from './_data'
 
-const doc = new GoogleSpreadsheet(process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID);
+function getFlag(country) {
+  try {
+    const str = country.replace(/\s+/g, '-').toLowerCase();
+    const flagURL = `/flags/${str}.png`;
+    return L.icon({ iconUrl: flagURL, className: styles.marker });
+  } catch(err) {
+    return L.icon({ iconUrl: `/flags/unknown.png`, className: styles.marker });
+  }
+}
 
 export default function Map() {
   const [rows, setRows] = useState([]);
@@ -22,11 +30,11 @@ export default function Map() {
   );
 
   useEffect(() => {
-    async function fetchRows() {
-      const rows = await fetchData();
+    async function getRows() {
+      const rows = await fetchSheetRow();
       setRows(rows);
     }
-    fetchRows();
+    getRows();
   }, []);
 
   useEffect(() => {
@@ -40,14 +48,12 @@ export default function Map() {
           continue;
         }
 
-        const position = await getLatLongFromZipcode(zipcode);
-        const str = country.replace(/\s+/g, '-').toLowerCase();
-        const flagURL = `/flags/${str}.png`;
+        const position = await getPosition(zipcode, row.Latitude, row.Longitude);
 
         const decoratedRow = {
           message: `This is where ${fullName} lives. Their family is from ${country}.`,
           position,
-          icon: L.icon({ iconUrl: flagURL, className: styles.marker }),
+          icon: getFlag(country),
           key: `${fullName}-${zipcode}-${country}`,
         };
         newMarkers.push(decoratedRow);
