@@ -3,11 +3,11 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
-  const DynamicMap = dynamic(() => import('./_map'), {
-    ssr: false,
-  })
+const DynamicMap = dynamic(() => import('../components/Map'), {
+  ssr: false, // Disable server-side rendering
+})
 
+export default function Home() {
   return (
     <div className={styles.container}>
       <Head>

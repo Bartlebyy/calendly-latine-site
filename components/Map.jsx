@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js';
 import styles from '../styles/Home.module.css';
-import { fetchSheetRow, getPosition } from './_data'
+import { fetchSheetRow, getPosition } from './Data'
 
 function getFlag(country) {
   try {
