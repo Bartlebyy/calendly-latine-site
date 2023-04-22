@@ -15,7 +15,7 @@ async function fetchSheetRow() {
     updateMissingLatLong(sheet, rows) 
     return rows
   } catch (err) {
-    console.log(`Error: ${err.message}`);
+    console.log(`Error fetching sheet row: ${err.message}`);
     return [];
   }
 }
@@ -32,7 +32,7 @@ async function updateMissingLatLong(sheet, rows) {
     }
     console.log(`Done updating missing latitude and longitude.`);
   } catch (err) {
-    console.log(`Error: ${err.message}`);
+    console.log(`Error updating missing lat long: ${err.message}`);
   }
 }
 
@@ -51,7 +51,7 @@ async function savePositionInSheet(sheet, rowNumber, lat, lon) {
       console.log(`Error: row ${rowNumber} not found.`);
     }
   } catch (err) {
-    console.log(`Error: ${err.message}`);
+    console.log(`Error saving position in sheet: ${err.message}`);
   }
 }
 
@@ -70,7 +70,7 @@ async function getLatLongFromZipcode(zipcode) {
 
     return [0, 0];
   } catch (err) {
-    console.log(`Error: ${err.message}`);
+    console.log(`Error getting lat long from zipcode: ${err.message}`);
     return [0, 0];
   }
 }
